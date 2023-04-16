@@ -1,10 +1,10 @@
 version: '3'
 services:
-  go-web-app:
+  node-app:
     restart: always
     build:
       dockerfile: Dockerfile
       context: .
     environment:
-      - VIRTUAL_HOST=kdllolymp.kz
-      - LETSENCRYPT_HOST=kdllolymp.kz
+      - VIRTUAL_HOST=tbckend.kz
+      - LETSENCRYPT_HOST=tbckend.kz
