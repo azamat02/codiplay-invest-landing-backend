@@ -1,6 +1,4 @@
-FROM alpine:3.16
-
-ENV NODE_VERSION 19.9.0
+FROM node 19.9.0
 
 # Create app directory
 WORKDIR /usr/src/app
