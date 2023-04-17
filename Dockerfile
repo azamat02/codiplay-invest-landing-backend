@@ -1,4 +1,6 @@
-FROM node:10-alpine
+FROM alpine:3.16
+
+ENV NODE_VERSION 19.9.0
 
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
