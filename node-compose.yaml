@@ -6,5 +6,5 @@ services:
       dockerfile: Dockerfile
       context: .
     environment:
-      - VIRTUAL_HOST=tbckend.kz
-      - LETSENCRYPT_HOST=tbckend.kz
+      - VIRTUAL_HOST=qazaqunion.kz
+      - LETSENCRYPT_HOST=qazaqunion.kz
