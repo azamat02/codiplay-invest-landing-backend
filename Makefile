@@ -3,7 +3,7 @@ clear:
 delete:
 	docker images -aq | xargs -I 'ID' docker rmi 'ID'
 compose:
-	docker-compose -f node-compose.yaml up -docker
+	docker-compose -f node-compose.yaml up -d
 compose-2:
 	docker-compose up -d
 run:
