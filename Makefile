@@ -1,5 +1,5 @@
 stop:
-	docker stop $(docker ps -q)
+	docker-compose down
 clear_containers:
 	docker rm $(docker ps -q -a)
 clear_images:
