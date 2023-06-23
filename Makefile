@@ -1,9 +1,7 @@
-stop:
-	docker-compose down
-clear_containers:
-	docker rm $(docker ps -q -a)
-clear_images:
-	docker rmi $(docker images -q)
+clear:
+	docker ps -aq | xargs -I 'ID' docker stop 'ID' | xargs -I 'ID' docker rm 'ID'
+delete:
+	docker images -aq | xargs -I 'ID' docker rmi 'ID'
 compose:
 	docker-compose -f node-compose.yaml up -docker
 compose-2:
