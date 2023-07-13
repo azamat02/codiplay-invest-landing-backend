@@ -96,6 +96,40 @@ app.post('/append_school_v2', async (req, res) => {
     }
 })
 
+app.post('/append_school_v3', async (req, res) => {
+    if (req.body.data) {
+        const sheetId = process.env.SCHOOLS_SHEET_ID
+        const result = await appendValues(sheetId, "A:H", "USER_ENTERED", [req.body.data])
+        const userData = {  name: req.body.data[0],
+            phone: req.body.data[1],
+            country: req.body.data[2],
+            region: req.body.data[3],
+            area: req.body.data[4],
+            city: req.body.data[5],
+            school: req.body.data[6],
+            role: req.body.data[7],
+            date: req.body.data[8]}
+        console.log('Added new for connecting school request!')
+        console.log(userData)
+        sendToTelegramChat(userData, true)
+
+        if (result.status === 200) {
+            res.status(201)
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ message: "created" }, null, 3));
+        } else {
+            res.status(500)
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ message: "google sheets api error" }, null, 3));
+        }
+    }
+    else {
+        res.status(400)
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ status: "data not provided in request body" }, null, 3));
+    }
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
