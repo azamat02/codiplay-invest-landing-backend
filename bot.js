@@ -10,7 +10,7 @@ async function sendToTelegramChat(data, channel) {
         bot.telegram.sendPhoto(campChatId, {source: "new_request.png"}, {caption: "#лагерь\nНовая заявка с лендинга!\n\nФИО: "+data.name+"\nНомер телефона: "+data.phone+"\nКто отправил заявку: "+data.role+"\nДата отправки: "+data.date});
     }
     else {
-        bot.telegram.sendPhoto(chatId, {source: "new_request.png"}, {caption: "#инвест\nНовая заявка с лендинга!\n\nФИО: "+data.name+"\nНомер телефона: "+data.phone+"\nДата отправки: "+data.date});
+        bot.telegram.sendPhoto(chatId, {source: "new_request.png"}, {caption: "#инвест\nНовая заявка с лендинга!\n\nФИО: "+data.name+"\nНомер телефона: "+data.phone+"\nСсылка WhatsApp: https://wa.me/"+'7'+(data.phone).slice(1)+"\nДата отправки: "+data.date});
     }
 }
 

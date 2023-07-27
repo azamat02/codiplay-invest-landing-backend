@@ -132,7 +132,7 @@ app.post('/append_school_v3', async (req, res) => {
 
 app.post('/append_application_camp', async (req, res) => {
     if (req.body.data) {
-        const date = new Date().toLocaleString('ru-RU', {month: 'long', day: 'numeric', year: 'numeric', weekday: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit'})
+        const date = new Date().toLocaleString('ru-RU', {timeZone: 'Asia/Almaty', month: 'long', day: 'numeric', year: 'numeric', weekday: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit'})
         const sheetId = process.env.CODICAMP_SHEET_ID
         const result = await appendValues(sheetId, "A:E", "USER_ENTERED", [[...req.body.data, date]])
         const userData = {  name: req.body.data[0],
