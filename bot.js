@@ -7,7 +7,7 @@ async function sendToTelegramChat(data, channel) {
     if (channel === 'school') {
         bot.telegram.sendPhoto(chatId, {source: "new_request.png"}, {caption: "#школы\nНовая заявка с лендинга!\n\nФИО: "+data.name+"\nНомер телефона: "+data.phone+"\nСсылка WhatsApp: https://wa.me/"+'7'+(data.phone).slice(1)+"\nСтрана: "+data.country+"\nОбласть: "+data.region+"\nРегион: "+data.area+"\nНаселенный пункт: "+data.city+"\nШкола: "+data.school+"\nДолжность: "+data.role+"\nДата отправки: "+data.date});
     } else if (channel === 'camp') {
-        bot.telegram.sendPhoto(campChatId, {source: "new_request.png"}, {caption: "#лагерь\nНовая заявка с лендинга!\n\nФИО: "+data.name+"\nНомер телефона: "+data.phone+"\nСсылка WhatsApp: https://wa.me/"+'7'+(data.phone).slice(1)+"\nКто отправил заявку: "+data.role+"\nДата отправки: "+data.date});
+        bot.telegram.sendPhoto(campChatId, {source: "new_request.png"}, {caption: "#лагерь\nНовая заявка с лендинга!\n\nФИО: "+data.name+"\nНомер телефона: "+data.phone+"\nСсылка WhatsApp: https://wa.me/"+'7'+(data.phone).slice(1)+"\nКто отправил заявку: "+data.role+"\nИсточник: "+data.utm_source+"\nКанал: "+data.utm_medium+"\nКампания: "+data.utm_campaign+"\nДата отправки: "+data.date});
     }
     else {
         bot.telegram.sendPhoto(chatId, {source: "new_request.png"}, {caption: "#инвест\nНовая заявка с лендинга!\n\nФИО: "+data.name+"\nНомер телефона: "+data.phone+"\nДата отправки: "+data.date});

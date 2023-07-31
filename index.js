@@ -134,11 +134,11 @@ app.post('/append_application_camp', async (req, res) => {
     if (req.body.data) {
         const date = new Date().toLocaleString('ru-RU', {timeZone: 'Asia/Almaty', month: 'long', day: 'numeric', year: 'numeric', weekday: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit'})
         const sheetId = process.env.CODICAMP_SHEET_ID
-        const result = await appendValues(sheetId, "A:E", "USER_ENTERED", [[...req.body.data, date]])
-        const userData = {  name: req.body.data[0],
-            phone: req.body.data[1],
-            role: req.body.data[2], date: date}
+        const result = await appendValues(sheetId, "A:I", "USER_ENTERED", [[...req.body.data, date]])
+        const userData = { name: req.body.data[0], phone: req.body.data[1], role: req.body.data[2], date: date,
+                                utm_source: req.body.data[3], utm_medium: req.body.data[4], utm_campaign: req.body.data[5]}
         console.log('New application request for camp!')
+        console.log(req.body)
         console.log(userData)
         await sendToTelegramChat(userData, 'camp')
 
