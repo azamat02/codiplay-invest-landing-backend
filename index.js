@@ -11,6 +11,8 @@ app.use(cors())
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/
 
+
+
 app.post('/append', async (req, res) => {
     if (req.body.data) {
         const sheetId = process.env.SHEET_ID
@@ -42,7 +44,7 @@ app.post('/append_sandu', async (req, res) => {
 
     if (req.body.data) {
         const sheetId = process.env.SANDU_SHEET_ID
-        const result = await appendValues(sheetId, "A:D", "USER_ENTERED", date)
+        const result = await appendValues(sheetId, "A:D", "USER_ENTERED", [req.body.data])
         const userData = {name: req.body.data[0], phone: req.body.data[1], email: req.body.data[2], date: date}
         console.log('Added new request to Sandu!')
         console.log(userData)
