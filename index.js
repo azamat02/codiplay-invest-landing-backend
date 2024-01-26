@@ -11,8 +11,6 @@ app.use(cors())
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/
 
-
-
 app.post('/append', async (req, res) => {
     if (req.body.data) {
         const sheetId = process.env.SHEET_ID
