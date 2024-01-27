@@ -1,6 +1,8 @@
-async function sendToTelegramChat(data, channel) {
-    const { Telegraf } = require('telegraf');
-    require('dotenv').config()
+import {Telegraf} from "telegraf";
+import {config} from "dotenv";
+config()
+
+export async function sendToTelegramChat(data, channel) {
     const bot = new Telegraf(process.env.BOT_TOKEN);
     const chatId = -1001809748130
     const campChatId = -1001895897735
@@ -19,5 +21,3 @@ async function sendToTelegramChat(data, channel) {
         bot.telegram.sendPhoto(chatId, {source: "new_request.png"}, {caption: "#инвест\nНовая заявка с лендинга!\n\nФИО: "+data.name+"\nНомер телефона: "+data.phone+"\nДата отправки: "+data.date});
     }
 }
-
-module.exports = {sendToTelegramChat}

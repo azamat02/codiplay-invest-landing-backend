@@ -1,17 +1,89 @@
-const express = require('express')
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import {createRecord, db, getRecordByColumn, updateRecordIfNotUsed} from "./config.js";
+import {sendToTelegramChat} from "./bot.js";
+import {appendValues} from "./appendDataToSheets.js";
+import {config} from 'dotenv'
+import {Markup, Telegraf} from "telegraf";
+import {collection, doc, query, setDoc, where} from "firebase/firestore";
+const bot = new Telegraf(process.env.BOT_TOKEN);
+
+config()
+
 const app = express()
 const port = 80
-const cors = require('cors')
-const { appendValues } = require('./appendDataToSheets')
-const bodyParser = require('body-parser')
-const { sendToTelegramChat } = require('./bot')
-require ('dotenv').config()
 
 app.use(cors())
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/
 
+export function generateUniqueCode() {
+    return Math.random().toString().slice(2, 12);
+}
+bot.start((ctx) => {
+    ctx.reply('Welcome! Click the button below to generate a code.', Markup
+        .keyboard([['Generate code']])
+        .oneTime()
+        .resize()
+    );
+});
 
+let awaitingEmail = {};
+
+bot.hears('Generate code', (ctx) => {
+    ctx.reply('Please enter your email:');
+    awaitingEmail[ctx.from.id] = true; // Mark user as awaiting email input
+});
+
+bot.on('text', async (ctx) => {
+    if (awaitingEmail[ctx.from.id]) {
+        const email = ctx.message.text;
+        const code = generateUniqueCode();
+        await createRecord(email, code);
+        ctx.reply(`Your code: ${code}\nCreated at: ${new Date().toLocaleString()}`, Markup
+            .keyboard([['Generate code']])
+            .oneTime()
+            .resize());
+        delete awaitingEmail[ctx.from.id]; // Remove user from awaiting email list
+    }
+});
+
+app.get('/check/:code', (req, res) => {
+    const { code } = req.params;
+
+    getRecordByColumn("codes", "code", code).then((records) => {
+        if (records.length > 0) {
+            const record = records[0]; // Assuming 'code' values are unique, so we take the first record
+
+            // Check if the code has not been used
+            if (!record.used) {
+                res.json({ access: true });
+            } else {
+                // Code exists but has been marked as used
+                res.json({ access: false, message: "Code has already been used" });
+            }
+        } else {
+            // No record found for the provided code
+            res.json({ access: false, message: "Code not found" });
+        }
+    }).catch(err => {
+        console.error(err);
+        res.status(500).json({ message: "Firebase error" });
+    });
+});
+
+app.post('/update-code', async (req, res) => {
+    const { code, result } = req.body;
+
+    const updateResult = await updateRecordIfNotUsed(code, result);
+
+    if (updateResult.success) {
+        res.json({ message: updateResult.message });
+    } else {
+        res.status(404).json({ message: updateResult.message });
+    }
+});
 
 app.post('/append', async (req, res) => {
     if (req.body.data) {
@@ -217,6 +289,7 @@ app.post('/append_wedding_data', async (req, res) => {
     }
 })
 
+bot.launch()
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

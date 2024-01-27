@@ -1,7 +1,7 @@
-async function appendValues(spreadsheetId, range, valueInputOption, _values) {
-    const {GoogleAuth} = require('google-auth-library');
-    const {google} = require('googleapis');
-  
+import {GoogleAuth} from 'google-auth-library'
+import {google} from 'googleapis'
+export async function appendValues(spreadsheetId, range, valueInputOption, _values) {
+
     const auth = new GoogleAuth({
         keyFile: "credentials.json",
         scopes: 'https://www.googleapis.com/auth/spreadsheets',
@@ -27,4 +27,3 @@ async function appendValues(spreadsheetId, range, valueInputOption, _values) {
     }
 }
 
-module.exports = {appendValues}
