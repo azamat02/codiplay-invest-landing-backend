@@ -139,6 +139,33 @@ app.post('/append_sandu', async (req, res) => {
     }
 })
 
+app.post('/append_invite', async (req, res) => {
+    const date = new Date().toLocaleString('ru-RU', {timeZone: 'Asia/Almaty', month: 'long', day: 'numeric', year: 'numeric', weekday: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit'})
+
+    if (req.body.data) {
+        const sheetId = process.env.INVITE_SHEET_ID
+        const result = await appendValues(sheetId, "A:B", "USER_ENTERED", [req.body.data])
+        const userData = {name: req.body.data[0], date: date}
+        console.log('Added new request to Invite!')
+        sendToTelegramChat(userData, 'invite')
+
+        if (result.status === 200) {
+            res.status(201)
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ message: "created" }, null, 3));
+        } else {
+            res.status(500)
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ message: "google sheets api error" }, null, 3));
+        }
+    }
+    else {
+        res.status(400)
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ status: "data not provided in request body" }, null, 3));
+    }
+})
+
 app.post('/append_school', async (req, res) => {
     if (req.body.data) {
         const sheetId = process.env.SCHOOLS_SHEET_ID
