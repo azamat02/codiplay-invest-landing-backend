@@ -18,7 +18,7 @@ export async function sendToTelegramChat(data, channel) {
     } else if (channel === 'sandu') {
         bot.telegram.sendPhoto(sanduChatId, {source: "new_request.png"}, {caption: "\nНовая заявка с сайта!\n\nФИО: "+data.name+"\nНомер телефона: "+data.phone+"\n Почта: "+data.email+"\nСсылка WhatsApp: https://wa.me/"+'7'+(data.phone).slice(1)+"\nДата отправки: "+data.date});
     } else if (channel === 'invite') {
-        bot.telegram.sendPhoto(inviteChatId, {source: "new_request.png"}, {caption: "\nНовая заявка с сайта!\n\nФИО: "+data.name+"\nДата отправки: "+data.date});
+        bot.telegram.sendPhoto(inviteChatId, {source: "new_request.png"}, {caption: "\nНовая заявка с сайта!\n\nФИО: "+data.name+"\nНазвание школа: "+data.school+"\nДата отправки: "+data.date});
     }
     else {
         bot.telegram.sendPhoto(chatId, {source: "new_request.png"}, {caption: "#инвест\nНовая заявка с лендинга!\n\nФИО: "+data.name+"\nНомер телефона: "+data.phone+"\nДата отправки: "+data.date});

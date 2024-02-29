@@ -144,8 +144,8 @@ app.post('/append_invite', async (req, res) => {
 
     if (req.body.data) {
         const sheetId = process.env.INVITE_SHEET_ID
-        const result = await appendValues(sheetId, "A:B", "USER_ENTERED", [req.body.data])
-        const userData = {name: req.body.data[0], date: date}
+        const result = await appendValues(sheetId, "A:C", "USER_ENTERED", [req.body.data])
+        const userData = {name: req.body.data[0], school: req.body.data[1], date: date}
         console.log('Added new request to Invite!')
         sendToTelegramChat(userData, 'invite')
 
