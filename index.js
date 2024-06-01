@@ -319,7 +319,7 @@ app.post('/append_wedding_data', async (req, res) => {
 app.post('/append_wedding_data_2', async (req, res) => {
     if (req.body.data) {
         const date = new Date().toLocaleString('ru-RU', {timeZone: 'Asia/Almaty', month: 'long', day: 'numeric', year: 'numeric', weekday: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit'})
-        const sheetId = process.env.WEDDING_SHEET_ID
+        const sheetId = process.env.WEDDING_SHEET_ID_2
         const userData = { names: req.body.data[0], guestsNum: req.body.data[1], attendance: req.body.data[2] ? 'Придут' : 'Не придут', date: date}
         const result = await appendValues(sheetId, "A:I", "USER_ENTERED", [[...Object.values(userData)]])
         console.log('New application request for wedding!')
