@@ -316,6 +316,34 @@ app.post('/append_wedding_data', async (req, res) => {
     }
 })
 
+app.post('/append_wedding_data_2', async (req, res) => {
+    if (req.body.data) {
+        const date = new Date().toLocaleString('ru-RU', {timeZone: 'Asia/Almaty', month: 'long', day: 'numeric', year: 'numeric', weekday: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit'})
+        const sheetId = process.env.WEDDING_SHEET_ID
+        const userData = { names: req.body.data[0], guestsNum: req.body.data[1], attendance: req.body.data[2] ? 'Придут' : 'Не придут', date: date}
+        const result = await appendValues(sheetId, "A:I", "USER_ENTERED", [[...Object.values(userData)]])
+        console.log('New application request for wedding!')
+        console.log(req.body)
+        console.log(userData)
+        await sendToTelegramChat(userData, 'wedding')
+
+        if (result.status === 200) {
+            res.status(201)
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ message: "created" }, null, 3));
+        } else {
+            res.status(500)
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ message: "google sheets api error" }, null, 3));
+        }
+    }
+    else {
+        res.status(400)
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ status: "data not provided in request body" }, null, 3));
+    }
+})
+
 bot.launch()
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
